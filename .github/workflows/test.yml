@@ -4,8 +4,6 @@ on: [push]
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "test"
@@ -28,5 +26,7 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm run coverage
+      - name: Report Coverage
+        uses: davelosert/vitest-coverage-report-action@v2
       - name: Build
         run: npm run build
