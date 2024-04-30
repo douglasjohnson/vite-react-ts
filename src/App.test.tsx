@@ -17,6 +17,6 @@ describe('App', () => {
   it('should increment count on click', async () => {
     await user.click(screen.getByRole('button'));
 
-    expect(screen.getByRole('button')).toHaveTextContent('count is 1');
+    expect(screen.getByRole('button')).toHaveTextContent('count is 2');
   });
 });
