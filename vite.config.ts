@@ -18,4 +18,9 @@ export default defineConfig({
       reporter: ['text', 'html', 'json-summary', 'json'],
     },
   },
+  server: {
+    proxy: {
+      '/decks': 'http://localhost:8080',
+    },
+  },
 });
