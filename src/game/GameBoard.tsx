@@ -69,15 +69,17 @@ function GameBoard({ deck }: GameBoardProps) {
   };
 
   const onAttributeClick = (attribute: Attribute) => {
-    const player1Value = cards1?.[0].attributes.find((cardAttribute) => cardAttribute.type === attribute.type)?.value;
-    const player2Value = cards2?.[0].attributes.find((cardAttribute) => cardAttribute.type === attribute.type)?.value;
-    let winner;
-    if (player1Value > player2Value) {
-      winner = 'player1';
-    } else if (player2Value > player1Value) {
-      winner = 'player2';
+    if (!game.player1 || !game.player2) {
+      const player1Value = cards1?.[0].attributes.find((cardAttribute) => cardAttribute.type === attribute.type)?.value || 0;
+      const player2Value = cards2?.[0].attributes.find((cardAttribute) => cardAttribute.type === attribute.type)?.value || 0;
+      let winner;
+      if (player1Value > player2Value) {
+        winner = 'player1';
+      } else if (player2Value > player1Value) {
+        winner = 'player2';
+      }
+      setGame({ player1: true, player2: true, winner });
     }
-    setGame({ player1: true, player2: true, winner });
   };
   const winner = () => {
     if (game.winner) {
