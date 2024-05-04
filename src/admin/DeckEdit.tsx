@@ -54,6 +54,12 @@ function DeckEdit({ deck, onUpdate, onCancel, confirmText }: DeckEditProps) {
                     attributes: updatedDeck.attributes.map((deckAttribute) =>
                       deckAttribute.name === attribute.name ? { ...deckAttribute, name: event.target.value } : deckAttribute,
                     ),
+                    cards: updatedDeck.cards.map((deckCard) => ({
+                      ...deckCard,
+                      attributes: deckCard.attributes.map((cardAttribute) =>
+                        cardAttribute.type === attribute.name ? { ...cardAttribute, type: event.target.value } : cardAttribute,
+                      ),
+                    })),
                   })
                 }
               />
@@ -109,7 +115,7 @@ function DeckEdit({ deck, onUpdate, onCancel, confirmText }: DeckEditProps) {
         </Grid>
       </Grid>
       <NewCardDialog
-        attributes={deck.attributes}
+        attributes={updatedDeck.attributes}
         open={addCard}
         onClose={() => setAddCard(false)}
         onConfirm={(card) => {
@@ -119,7 +125,7 @@ function DeckEdit({ deck, onUpdate, onCancel, confirmText }: DeckEditProps) {
       />
       {editCard && (
         <EditCardDialog
-          attributes={deck.attributes}
+          attributes={updatedDeck.attributes}
           card={editCard}
           open={true}
           onClose={() => setEditCard(undefined)}
