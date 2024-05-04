@@ -8,33 +8,30 @@ interface DeckCardProps {
   onDelete: () => void;
 }
 
-export function DeckCard({ deck, onClick, onDelete }: DeckCardProps) {
+export default function DeckCard({ deck, onClick, onDelete }: DeckCardProps) {
   return (
     <Card
       raised
       sx={{
         width: 200,
+        height: 360,
       }}
     >
-      <CardActionArea
-        onClick={onClick}
-        sx={{
-          height: 320,
-        }}
-      >
-        <CardHeader
-          title={deck.name}
-          action={
-            <IconButton aria-label="delete">
-              <DeleteRoundedIcon
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onDelete();
-                }}
-              />
-            </IconButton>
-          }
-        />
+      <CardHeader
+        title={deck.name}
+        action={
+          <IconButton
+            aria-label="delete"
+            onClick={(event) => {
+              event.stopPropagation();
+              onDelete();
+            }}
+          >
+            <DeleteRoundedIcon />
+          </IconButton>
+        }
+      />
+      <CardActionArea onClick={onClick}>
         <CardMedia component="img" height="240" image={deck.imageUrl} />
       </CardActionArea>
     </Card>

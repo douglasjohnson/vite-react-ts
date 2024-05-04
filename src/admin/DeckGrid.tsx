@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
-import { DeckCard } from './DeckCard';
-import { NewCard } from './NewCard';
+import DeckCard from './DeckCard';
+import NewCard from './NewCard';
 import PersistedDeck from '../types/PersistedDeck';
 
 interface DeckGridProps {
