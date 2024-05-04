@@ -1,4 +1,4 @@
-import { Card as MuiCard, CardActionArea, CardHeader, CardMedia, IconButton } from '@mui/material';
+import { Card as MuiCard, CardActionArea, CardContent, CardHeader, CardMedia, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import Card from '../types/Card';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
@@ -8,34 +8,40 @@ interface CardCardProps {
   onDelete: () => void;
 }
 
-export function CardCard({ card, onClick, onDelete }: CardCardProps) {
+export default function CardCard({ card, onClick, onDelete }: CardCardProps) {
   return (
     <MuiCard
       raised
       sx={{
         width: 200,
+        height: 420,
       }}
     >
-      <CardActionArea
-        onClick={onClick}
-        sx={{
-          height: 320,
-        }}
-      >
-        <CardHeader
-          title={card.name}
-          action={
-            <IconButton aria-label="delete">
-              <DeleteRoundedIcon
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onDelete();
-                }}
-              />
-            </IconButton>
-          }
-        />
+      <CardHeader
+        title={card.name}
+        action={
+          <IconButton
+            aria-label="delete"
+            onClick={(event) => {
+              event.stopPropagation();
+              onDelete();
+            }}
+          >
+            <DeleteRoundedIcon />
+          </IconButton>
+        }
+      />
+      <CardActionArea onClick={onClick}>
         <CardMedia component="img" height="240" image={card.imageUrl} />
+        <CardContent>
+          <List dense disablePadding>
+            {card.attributes.map((attribute, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemText primary={`${attribute.type} - ${attribute.value}`} />
+              </ListItem>
+            ))}
+          </List>
+        </CardContent>
       </CardActionArea>
     </MuiCard>
   );

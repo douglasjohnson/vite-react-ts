@@ -1,7 +1,5 @@
-type Attribute = {
-  type: string;
-  value: number;
-};
+import { Attribute } from './Attribute';
+
 type Card = {
   name: string;
   description: string;

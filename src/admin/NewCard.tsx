@@ -5,7 +5,7 @@ interface NewCardProps {
   onClick: () => void;
 }
 
-export function NewCard({ onClick }: NewCardProps) {
+export default function NewCard({ onClick }: NewCardProps) {
   return (
     <Card
       raised

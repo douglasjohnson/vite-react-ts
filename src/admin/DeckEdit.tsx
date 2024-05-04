@@ -1,11 +1,13 @@
 import Deck from '../types/Deck';
 import { useState } from 'react';
 import { Button, Grid, IconButton, List, ListItem, ListItemButton, Stack, TextField } from '@mui/material';
-import { NewCard } from './NewCard';
-import { NewCardDialog } from './NewCardDialog';
-import { CardCard } from './CardCard';
+import NewCard from './NewCard';
+import NewCardDialog from './NewCardDialog';
+import CardCard from './CardCard';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import Card from '../types/Card';
+import EditCardDialog from './EditCardDialog';
 
 interface DeckEditProps {
   deck: Deck;
@@ -17,6 +19,7 @@ interface DeckEditProps {
 function DeckEdit({ deck, onUpdate, onCancel, confirmText }: DeckEditProps) {
   const [updatedDeck, setUpdatedDeck] = useState(deck);
   const [addCard, setAddCard] = useState(false);
+  const [editCard, setEditCard] = useState<Card>();
 
   return (
     <div>
@@ -24,20 +27,22 @@ function DeckEdit({ deck, onUpdate, onCancel, confirmText }: DeckEditProps) {
         <TextField label="Name" value={updatedDeck.name} onChange={(event) => setUpdatedDeck({ ...deck, name: event.target.value })} />
         <TextField label="Image" value={updatedDeck.imageUrl} onChange={(event) => setUpdatedDeck({ ...deck, imageUrl: event.target.value })} />
         <List>
-          {updatedDeck.attributes.map((attribute) => (
+          {updatedDeck.attributes.map((attribute, index) => (
             <ListItem
-              key={attribute.name}
+              key={index}
               secondaryAction={
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon
-                    onClick={() => {
-                      const attributes = updatedDeck.attributes.filter((value) => value.name !== attribute.name);
-                      setUpdatedDeck({
-                        ...updatedDeck,
-                        attributes,
-                      });
-                    }}
-                  />
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => {
+                    const attributes = updatedDeck.attributes.filter((value) => value.name !== attribute.name);
+                    setUpdatedDeck({
+                      ...updatedDeck,
+                      attributes,
+                    });
+                  }}
+                >
+                  <DeleteIcon />
                 </IconButton>
               }
             >
@@ -89,7 +94,7 @@ function DeckEdit({ deck, onUpdate, onCancel, confirmText }: DeckEditProps) {
           <Grid key={card.name} item>
             <CardCard
               card={card}
-              onClick={() => {}}
+              onClick={() => setEditCard(card)}
               onDelete={() =>
                 setUpdatedDeck({
                   ...updatedDeck,
@@ -112,6 +117,18 @@ function DeckEdit({ deck, onUpdate, onCancel, confirmText }: DeckEditProps) {
           setAddCard(false);
         }}
       />
+      {editCard && (
+        <EditCardDialog
+          attributes={deck.attributes}
+          card={editCard}
+          open={true}
+          onClose={() => setEditCard(undefined)}
+          onConfirm={(card) => {
+            setUpdatedDeck({ ...updatedDeck, cards: updatedDeck.cards.map((existingCard) => (existingCard === editCard ? card : existingCard)) });
+            setEditCard(undefined);
+          }}
+        />
+      )}
     </div>
   );
 }
