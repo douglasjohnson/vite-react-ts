@@ -16,7 +16,12 @@ export function CardCard({ card, onClick }: CardCardProps) {
         height: 420,
       }}
     >
-      <CardHeader title={card.name} />
+      <CardHeader
+        title={card.name}
+        titleTypographyProps={{
+          fontSize: '1.2em',
+        }}
+      />
       <CardMedia component="img" height="240" image={card.imageUrl} />
       <CardContent>
         <List dense disablePadding>
