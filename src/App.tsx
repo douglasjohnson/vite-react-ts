@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { deleteUser, findAll, save, update } from './UserService';
-import User from './User';
+import PersistedUser from './PersistedUser';
 
 function App() {
-  const [users, setUsers] = useState<User[]>();
+  const [users, setUsers] = useState<PersistedUser[]>();
   const [name, setName] = useState('');
 
   useEffect(() => {
@@ -19,7 +19,7 @@ function App() {
     save({ name }).then((newUser) => setUsers(users ? [...users, newUser] : [newUser]));
   };
 
-  const updateUser = (user: User) => {
+  const updateUser = (user: PersistedUser) => {
     update({ ...user, name }).then((updatedUser) => setUsers(users?.map((currentUser) => (currentUser === user ? updatedUser : currentUser))));
   };
 
