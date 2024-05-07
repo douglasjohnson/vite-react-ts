@@ -19,6 +19,9 @@ export default function CardCard({ card, onClick, onDelete }: CardCardProps) {
     >
       <CardHeader
         title={card.name}
+        titleTypographyProps={{
+          fontSize: '1.2em',
+        }}
         action={
           <IconButton
             aria-label="delete"
