@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/vite-react-ts/',
+  base: '/',
   test: {
     environment: 'jsdom',
     globals: true,
@@ -16,6 +16,14 @@ export default defineConfig({
         100: true,
       },
       reporter: ['text', 'html', 'json-summary', 'json'],
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
   },
 });

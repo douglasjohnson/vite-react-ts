@@ -1,13 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
+import { deleteUser, findAll, save, update } from './UserService';
+import User from './User';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [users, setUsers] = useState<User[]>();
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setUsers(await findAll());
+    };
+    fetchUsers();
+  }, []);
+
+  const createUser = () => {
+    setName('');
+    save({ name }).then((newUser) => setUsers(users ? [...users, newUser] : [newUser]));
+  };
+
+  const updateUser = (user: User) => {
+    update({ ...user, name }).then((updatedUser) => setUsers(users?.map((currentUser) => (currentUser === user ? updatedUser : currentUser))));
+  };
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
+      <h1>Users</h1>
+      <ul>
+        {users &&
+          users.map((user) => (
+            <li key={user.id}>
+              <span>{user.name}</span>
+              <button onClick={() => updateUser(user)}>Update</button>
+              <button onClick={() => deleteUser(user).then(() => setUsers(users?.filter((currentUser) => currentUser !== user)))}>Delete</button>
+            </li>
+          ))}
+      </ul>
+      <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
+      <button onClick={createUser}>Create</button>
     </>
   );
 }
