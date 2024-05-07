@@ -16,7 +16,7 @@ function App() {
 
   const createUser = () => {
     setName('');
-    save({ name }).then((newUser) => setUsers(users ? [...users, newUser] : [newUser]));
+    save({ name }).then((newUser) => users && setUsers([...users, newUser]));
   };
 
   const updateUser = (user: PersistedUser) => {
