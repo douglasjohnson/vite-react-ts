@@ -1,44 +1,43 @@
-import { useEffect, useState } from 'react';
 import './App.css';
-import { deleteUser, findAll, save, update } from './UserService';
-import PersistedUser from './PersistedUser';
+import DeckAdmin from './admin/DeckAdmin';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { Game } from './game/Game';
+import { Card, CardMedia, Stack } from '@mui/material';
 
 function App() {
-  const [users, setUsers] = useState<PersistedUser[]>();
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setUsers(await findAll());
-    };
-    fetchUsers();
-  }, []);
-
-  const createUser = () => {
-    setName('');
-    save({ name }).then((newUser) => users && setUsers([...users, newUser]));
-  };
-
-  const updateUser = (user: PersistedUser) => {
-    update({ ...user, name }).then((updatedUser) => setUsers(users?.map((currentUser) => (currentUser === user ? updatedUser : currentUser))));
-  };
-
   return (
-    <>
-      <h1>Users</h1>
-      <ul>
-        {users &&
-          users.map((user) => (
-            <li key={user.id}>
-              <span>{user.name}</span>
-              <button onClick={() => updateUser(user)}>Update</button>
-              <button onClick={() => deleteUser(user).then(() => setUsers(users?.filter((currentUser) => currentUser !== user)))}>Delete</button>
-            </li>
-          ))}
-      </ul>
-      <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
-      <button onClick={createUser}>Create</button>
-    </>
+    <BrowserRouter basename="/vite-react-ts">
+      <Routes>
+        <Route
+          index
+          path="/"
+          element={
+            <Stack direction="row" spacing={2}>
+              <Link to="/build">
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="240"
+                    image="https://cdn.akamai.steamstatic.com/steam/apps/816240/capsule_616x353.jpg?t=1595857182"
+                  />
+                </Card>
+              </Link>
+              <Link to="/play">
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="240"
+                    image="https://sm.pcmag.com/pcmag_uk/how-to/i/instant-co/instant-co-op-how-to-play-ps5-games-with-friends-using-share_n6u6.jpg"
+                  />
+                </Card>
+              </Link>
+            </Stack>
+          }
+        />
+        <Route path="build" element={<DeckAdmin />} />
+        <Route path="play" element={<Game />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
