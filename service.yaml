@@ -9,14 +9,14 @@ spec:
     spec:
       containers:
       - name: vite-react-ts
-        image: douglasjohnson/vite-react-ts:1
+        image: douglasjohnson/vite-react-ts:latest
         env:
         - name: API_URL
           value: http://localhost:5000
         ports:
         - containerPort: 8080
       - name: spring-boot-open-api-mongodb
-        image: douglasjohnson/spring-boot-open-api-mongodb:1
+        image: douglasjohnson/spring-boot-open-api-mongodb:latest
         env:
           - name: spring.data.mongodb.uri
             valueFrom:
