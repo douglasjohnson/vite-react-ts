@@ -2,3 +2,6 @@
 coverage
 dist
 node_modules
+.idea
+service.yaml
+.gitignore

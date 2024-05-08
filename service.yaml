@@ -1,0 +1,27 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: vite-react-ts
+  labels:
+    cloud.googleapis.com/location: us-central1
+spec:
+  template:
+    spec:
+      containers:
+      - name: vite-react-ts
+        image: douglasjohnson/vite-react-ts:1
+        env:
+        - name: API_URL
+          value: http://localhost:5000
+        ports:
+        - containerPort: 8080
+      - name: spring-boot-open-api-mongodb
+        image: douglasjohnson/spring-boot-open-api-mongodb:1
+        env:
+          - name: spring.data.mongodb.uri
+            valueFrom:
+              secretKeyRef:
+                key: latest
+                name: spring-data-mongodb-uri
+          - name: PORT
+            value: '5000'

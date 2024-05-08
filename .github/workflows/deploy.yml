@@ -29,5 +29,4 @@ jobs:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
       - uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: 'vite-react-ts'
-          image: 'douglasjohnson/vite-react-ts'
+          metadata: './service.yaml'
