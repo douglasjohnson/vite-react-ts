@@ -4,6 +4,9 @@ metadata:
   name: vite-react-ts
   labels:
     cloud.googleapis.com/location: us-central1
+    run.googleapis.com/startupProbeType: Default
+  annotations:
+    run.googleapis.com/container-dependencies: '{"vite-react-ts":["spring-boot-open-api-mongodb"]}'
 spec:
   template:
     spec:
@@ -15,6 +18,12 @@ spec:
           value: http://localhost:5000
         ports:
         - containerPort: 8080
+        startupProbe:
+          timeoutSeconds: 1
+          periodSeconds: 10
+          failureThreshold: 1
+          tcpSocket:
+            port: 8080
       - name: spring-boot-open-api-mongodb
         image: douglasjohnson/spring-boot-open-api-mongodb:latest
         env:
@@ -25,3 +34,9 @@ spec:
                 name: spring-data-mongodb-uri
           - name: PORT
             value: '5000'
+        startupProbe:
+          timeoutSeconds: 1
+          periodSeconds: 10
+          failureThreshold: 3
+          tcpSocket:
+            port: 5000
